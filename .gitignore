@@ -1,0 +1,8 @@
+#Environments
+.venv
+
+# Mlflow
+mlruns/
+mlartifacts/
+outputs/
+mlruns.db

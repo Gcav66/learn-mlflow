@@ -72,9 +72,15 @@ def store_model(alpha, l1_ratio, rmse, mae, r2, model):
     print("  RMSE: %s" % rmse)
     print("  MAE: %s" % mae)
     print("  R2: %s" % r2)
+
+    #Use current datetime as model_id
     current_datetime = str(datetime.now()).replace(' ', '_')
+
+    #Save model locally with joblib
     model_name = f'{current_datetime}_my_model'
     dump(model, 'model_store/' + model_name)
+
+    #Save model metrics to CSV
     with open('model_metrics/model_metrics.csv', 'a') as f:
         writer = csv.writer(f)
         writer.writerow([current_datetime, alpha, l1_ratio, rmse, mae, r2])

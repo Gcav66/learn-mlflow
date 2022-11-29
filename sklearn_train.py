@@ -29,7 +29,8 @@ def eval_metrics(actual, pred):
     return rmse, mae, r2
 
 def ingest():
-    # Read the wine-quality csv file from the URL
+    """Read the wine-quality csv file from the hardcoded URL"""
+    #To Do: move data to EDW and make a generic ingest class
     csv_url = (
         "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
     )
@@ -41,22 +42,24 @@ def ingest():
         )
     return data
 
-def split(data):
+def split(data, target_var):
+    """Assumes data is a pandas dataframe and target_var is a str"""
     np.random.seed(40)
 
     # Split the data into training and test sets. (0.75, 0.25) split.
     train, test = train_test_split(data)
 
     # The predicted column is "quality" which is a scalar from [3, 9]
-    train_x = train.drop(["quality"], axis=1)
-    test_x = test.drop(["quality"], axis=1)
-    train_y = train[["quality"]]
-    test_y = test[["quality"]]
+    train_x = train.drop([target_var], axis=1)
+    test_x = test.drop([target_var], axis=1)
+    train_y = train[[target_var]]
+    test_y = test[[target_var]]
 
 
     return train_x, test_x, train_y, test_y
 
 def train(train_x, train_y, test_x, test_y, alpha, l1_ratio):
+    """Assumes train"""
     lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
     lr.fit(train_x, train_y)
 
@@ -66,8 +69,9 @@ def train(train_x, train_y, test_x, test_y, alpha, l1_ratio):
     return lr, rmse, mae, r2
 
 
-def store_model(alpha, l1_ratio, rmse, mae, r2, model):
-
+def store_model(alpha, l1_ratio, rmse, mae, r2, model, target_var):
+    """Assumes alpha, l1_ratio, rmse, mae, and r2 are floats
+       Assumes model is a sklearn estimator"""
     print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
     print("  RMSE: %s" % rmse)
     print("  MAE: %s" % mae)
@@ -83,16 +87,17 @@ def store_model(alpha, l1_ratio, rmse, mae, r2, model):
     #Save model metrics to CSV
     with open('model_metrics/model_metrics.csv', 'a') as f:
         writer = csv.writer(f)
-        writer.writerow([current_datetime, alpha, l1_ratio, rmse, mae, r2])
+        writer.writerow([current_datetime, alpha, l1_ratio, rmse, mae, r2, target_var])
     return True
 
 def main():
     alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
     l1_ratio = float(sys.argv[2]) if len(sys.argv) > 2 else 0.5
+    target_var = str(sys.argv[3]) if len(sys.argv) > 3 else "quality"
     data = ingest()
-    train_x, test_x, train_y, test_y = split(data)
+    train_x, test_x, train_y, test_y = split(data, target_var)
     estimator, rmse, mae, r2 = train(train_x, train_y, test_x,  test_y, alpha, l1_ratio)
-    store_model(alpha, l1_ratio, rmse, mae, r2, estimator)
+    store_model(alpha, l1_ratio, rmse, mae, r2, estimator, target_var)
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")

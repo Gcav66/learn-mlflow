@@ -16,6 +16,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v3
       
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+          
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:

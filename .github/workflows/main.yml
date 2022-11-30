@@ -21,7 +21,12 @@ jobs:
           auto-activate-base: true
           activate-environment: ""
       
+      # Install mlflow
+      - name: Install dependencies
+        run: |
+          ./env.sh
+      
       # Run our unit tests
       - name: Run mlflow workflow
         run: |
-          mlflow run wine_example
+          python wine_example/train.py

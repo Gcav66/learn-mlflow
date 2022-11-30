@@ -133,3 +133,6 @@ mlruns/
 mlartifacts/
 outputs/
 mlruns.db
+
+#old stuff
+*.old

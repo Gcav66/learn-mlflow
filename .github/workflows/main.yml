@@ -21,6 +21,11 @@ jobs:
           auto-activate-base: true
           activate-environment: ""
       
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
       # Install mlflow
       - name: Install dependencies
         run: |

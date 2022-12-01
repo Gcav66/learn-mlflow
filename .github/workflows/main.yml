@@ -36,11 +36,6 @@ jobs:
       # - name: Install dependencies
       #  run: pip install -r requirements.txt
       
-      # Run script manually
-      - name: Run mlflow workflow
-        run: |
-          python wine_example/train.py
-      
       # Run as a mlflow project
       - name: Run mlflow project
         run: |

@@ -31,4 +31,4 @@ jobs:
       # Run as a mlflow project
       - name: Run mlflow project
         run: |
-          mlflow run wine_example -P alpha=0.8 -P l1_ratio=0.9 -P target_var="quality"
+          mlflow run wine_example -P alpha=0.8 -P l1_ratio=0.9 -P target_var="quality" --env-manager=local

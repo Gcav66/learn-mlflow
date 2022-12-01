@@ -5,7 +5,7 @@ python_env: python_env.yaml
 entry_points:
   main:
     parameters:
-      alpha: {type: float, default: 0.5}
+      alpha: {type: float, default: 0.9}
       l1_ratio: {type: float, default: 0.5}
       target_var: {type: str, default: "quality"}
     command: "python sklearn_train.py {alpha} {l1_ratio} {target_var}"

@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 DATA_URL = os.environ["CSV_URL"]
 TARGET_VAR = os.environ["TARGET_VAR"]
 TRAINING_PARAMS = {
-    "alpha": 1.0,
-    "l1_ratio": 1.0,
-    "random_state": 42
+    "alpha": float(os.environ["ALPHA"]),
+    "l1_ratio": float(os.environ["L1_RATIO"]),
+    "random_state": int(os.environ["RANDOM_STATE"])
 }
 
 def ingest_data():

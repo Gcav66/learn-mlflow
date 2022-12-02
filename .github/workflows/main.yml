@@ -10,6 +10,12 @@ on:
     branches:
       - main
 
+env:
+  CSV_URL="http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
+  TARGET_VAR="quality"
+  ALPHA=1.0
+  L1_RATIO=0.9
+  RANDOM_STATE=42
 
 jobs:
   build:
@@ -24,13 +30,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-
-      # Test Env
-      - name: Test Env Var
+      
+      # Check Env Variables
+      - name: Check Env
         run: |
-          cat wine_example/env.sh
-          source wine_example/env.sh
-          echo "$CSV_URL"
+          echo $CSV_URL
 
       # Install mlflow
       - name: Install dependencies
